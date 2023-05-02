@@ -5,6 +5,7 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
+        this.load.audio("music_psykick", "./assets/psykick-112469.mp3");
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_explosion2', './assets/explosion2.wav');
@@ -15,6 +16,7 @@ class Menu extends Phaser.Scene {
         
     }
     create() {
+      
         // menu text configuration
         let menuConfig = {
             fontFamily: 'Courier',
@@ -44,11 +46,12 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
           // easy mode
           game.settings = {
-            spaceshipSpeed: 2.5,
+            spaceshipSpeed: 2,
             gameTimer: 60000    
           }
           this.sound.play('sfx_select');
-          this.scene.start('playScene');    
+          this.scene.start('playScene');  
+            
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
           // hard mode

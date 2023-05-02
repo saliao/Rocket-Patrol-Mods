@@ -10,6 +10,9 @@ Mods used:
 -Implement mouse control for player movement and mouse click to fire (15)
 -Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (15)
 -Create 4 new explosion sound effects and randomize which one plays on impact (10)
+-Using a texture atlas, create a new animated sprite for the Spaceship enemies (10)
+-Add your own (copyright-free) background music to the Play scene (please be mindful of the volume) (5)
+- Music Name & Source: Psykick by DSTechnician pixabay.com/music/search/8bit/
 */
 let config = {
     type: Phaser.AUTO,

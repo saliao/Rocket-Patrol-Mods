@@ -12,6 +12,8 @@ class Play extends Phaser.Scene {
         this.load.image('starfield2', './assets/starfield2.png')
         this.load.image('starfield3', './assets/starfield3.png')
         this.load.image('starfield5', './assets/starfield5.png')
+        this.load.spritesheet('spaceshipanim', './assets/spaceshipanim.png',{frameWidth: 63, frameHeight: 32, startFrame: 0, endFrame: 1});
+        this.load.spritesheet('alienshipanim', './assets/alienshipanim.png',{frameWidth: 31, frameHeight: 15, startFrame: 0, endFrame: 3});
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         
@@ -20,6 +22,11 @@ class Play extends Phaser.Scene {
     
     
     create() {
+        this.music = this.sound.add("music_psykick", {volume:0.2}, 
+        {
+            loop:true
+        });
+        this.music.play()
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         this.starfield2 = this.add.tileSprite(0, 0, 640, 480, 'starfield2').setOrigin(0, 0);
@@ -98,10 +105,10 @@ class Play extends Phaser.Scene {
       }, null, this);
       this.clock30 = this.time.delayedCall(game.settings.gameTimer/2, () => 
       {
-          this.ship01.increaseSpeed(1.5);
-          this.ship02.increaseSpeed(1.5);
-          this.ship03.increaseSpeed(1.5);
-          this.ship04.increaseSpeed(1.5);
+          this.ship01.increaseSpeed(2);
+          this.ship02.increaseSpeed(2);
+          this.ship03.increaseSpeed(2);
+          this.ship04.increaseSpeed(2);
       }, null, this);
     }   
     update(time, delta) {
@@ -113,6 +120,7 @@ class Play extends Phaser.Scene {
         
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
+            this.music.pause();
           }
         if (!this.gameOver) {               
             this.p1Rocket.update();         // update rocket sprite
@@ -149,7 +157,7 @@ class Play extends Phaser.Scene {
       this.p1Rocket.reset();
       this.shipExplode(this.ship04);
     }
-    console.log("timeLeft: " + this.seconds);
+    //console.log("timeLeft: " + this.seconds);
     if(this.seconds - delta >= 0)
     {
         this.seconds -= delta;

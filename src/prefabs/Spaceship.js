@@ -8,6 +8,35 @@ class Spaceship extends Phaser.GameObjects.Sprite {
         //if (frame = 'alienship'){
         //    this.moveSpeed = 6;
         //}
+        this.anims.create(
+            {
+                key: "alienshipanim", 
+                frames: this.anims.generateFrameNumbers("alienshipanim", 
+                {
+                    start: 0,
+                    end: 3,
+                    nextAnim: "alienshipanim",
+                }),
+                frameRate: 30,
+            });
+            this.anims.create(
+                {
+                    key: "spaceshipanim", 
+                    frames: this.anims.generateFrameNumbers("spaceshipanim", 
+                    {
+                        start: 0,
+                        end: 1,
+                        nextAnim: "spaceshipanim",
+                    }),
+                    frameRate: 30,
+                });
+            if (this.y == borderUISize*4) {
+                this.anims.play("alienshipanim");
+            }
+            else {
+                this.anims.play("spaceshipanim");
+            }
+            this.anims.setRepeat(-1);
     }
 
     update() {
@@ -27,7 +56,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
     }
 
     alienupdate() {
-        this.moveSpeed = game.settings.spaceshipSpeed*1.5;
+        this.moveSpeed = game.settings.spaceshipSpeed*2;
         this.x -= this.moveSpeed;
 
         if(this.x <= 0) {
