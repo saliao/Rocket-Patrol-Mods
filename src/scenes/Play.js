@@ -9,6 +9,9 @@ class Play extends Phaser.Scene {
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('alienship', './assets/alienship.png');
+        this.load.image('starfield2', './assets/starfield2.png')
+        this.load.image('starfield3', './assets/starfield3.png')
+        this.load.image('starfield5', './assets/starfield5.png')
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         
@@ -19,6 +22,9 @@ class Play extends Phaser.Scene {
     create() {
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfield2 = this.add.tileSprite(0, 0, 640, 480, 'starfield2').setOrigin(0, 0);
+        this.starfield3 = this.add.tileSprite(0, 0, 640, 480, 'starfield3').setOrigin(0, 0);
+        this.starfield5 = this.add.tileSprite(0, 0, 640, 480, 'starfield5').setOrigin(0, 0);
         //green UI background
         // initialize score
         
@@ -75,6 +81,8 @@ class Play extends Phaser.Scene {
         },
         fixedWidth: 100
         }
+        this.seconds = game.settings.gameTimer;
+      
       this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
       this.scoreRight = this.add.text(borderUISize + borderPadding*43.5, borderUISize + borderPadding*2, game.settings.gameTimer/1000, timeConfig);
       // GAME OVER flag
@@ -89,8 +97,9 @@ class Play extends Phaser.Scene {
         this.gameOver = true;
       }, null, this);
     }   
-    update() {
+    update(time, delta) {
           // check key input for restart
+        let deltaMultiplier = (delta/16.66667);
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -105,10 +114,11 @@ class Play extends Phaser.Scene {
             this.ship03.update();
             this.ship04.update();
         } 
-        this.starfield.tilePositionX -= 4;
-        let seconds = game.settings.gameTimer/1000;
-        this.scoreRight.text = seconds;
-        seconds--;
+        this.starfield5.tilePositionX -= 0.5;
+        this.starfield.tilePositionX -= 1;
+        this.starfield2.tilePositionX -= 1.5;
+        this.starfield3.tilePositionX -= 2;
+        
         this.ship04.alienupdate();
         this.p1Rocket.update();
         this.ship01.update();               // update spaceships (x3)
@@ -132,6 +142,16 @@ class Play extends Phaser.Scene {
       this.p1Rocket.reset();
       this.shipExplode(this.ship04);
     }
+    console.log("timeLeft: " + this.seconds);
+    if(this.seconds - delta >= 0)
+    {
+        this.seconds -= delta;
+    }
+    else
+    {
+        this.seconds = 0.000;
+    }
+    this.scoreRight.text = Math.floor(this.seconds / 1000);
     
     }
     
@@ -141,6 +161,7 @@ class Play extends Phaser.Scene {
           rocket.x + rocket.width > ship.x && 
           rocket.y < ship.y + ship.height &&
           rocket.height + rocket.y > ship. y) {
+            
           return true;
         } else {
           return false;
@@ -158,15 +179,11 @@ class Play extends Phaser.Scene {
           boom.destroy();                       // remove explosion sprite
         });       
         // score add and repaint
+        
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
-        this.scoreRight.text = game.settings.gameTimer/1000;
+        //this.scoreRight.text = game.settings.gameTimer/1000;
         this.sound.play('sfx_explosion');
     }
-    countdown() {
-      let seconds = game.settings.gameTimer/1000;
-      this.scoreRight.text = seconds;
-      seconds--;
-      
-    }
+    
 }
