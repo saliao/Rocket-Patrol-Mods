@@ -190,7 +190,22 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
         //this.scoreRight.text = game.settings.gameTimer/1000;
-        this.sound.play('sfx_explosion');
+        let randomSound = Phaser.Math.Between(0, 4);
+        if (randomSound == 0) {
+          this.sound.play('sfx_explosion');
+        }
+        if (randomSound == 1) {
+          this.sound.play('sfx_explosion2');
+        }
+        if (randomSound == 2) {
+          this.sound.play('sfx_explosion3');
+        }
+        if (randomSound == 3) {
+          this.sound.play('sfx_explosion4');
+        }
+        if (randomSound == 4) {
+          this.sound.play('sfx_explosion5');
+        }
     }
     
 }

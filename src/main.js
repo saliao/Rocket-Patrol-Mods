@@ -9,6 +9,7 @@ Mods used:
 -Display the time remaining (in seconds) on the screen (10)
 -Implement mouse control for player movement and mouse click to fire (15)
 -Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (15)
+-Create 4 new explosion sound effects and randomize which one plays on impact (10)
 */
 let config = {
     type: Phaser.AUTO,
