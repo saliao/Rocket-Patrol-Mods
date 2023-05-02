@@ -39,6 +39,7 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        mouse = this.input.mousePointer;
         // animation config
         this.anims.create({
             key: 'explode',
@@ -59,11 +60,26 @@ class Play extends Phaser.Scene {
       },
       fixedWidth: 100
       }
+      let timeConfig = {
+        fontFamily: 'Courier',
+        fontSize: '28px',
+        backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 100
+        }
       this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+      this.scoreRight = this.add.text(borderUISize + borderPadding*43.5, borderUISize + borderPadding*2, game.settings.gameTimer/1000, timeConfig);
       // GAME OVER flag
       this.gameOver = false;
       // 60-second play clock
       scoreConfig.fixedWidth = 0;
+      //setInterval(this.countdown,1000);
+      const seconds = game.settings.gameTimer/1000;
       this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
         this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
@@ -75,6 +91,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
+        
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
           }
@@ -130,6 +147,13 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
+        this.scoreRight.text = game.settings.gameTimer/1000;
         this.sound.play('sfx_explosion');
+    }
+    countdown() {
+      let seconds = game.settings.gameTimer/1000;
+      this.scoreRight.text = seconds;
+      seconds--;
+      
     }
 }
