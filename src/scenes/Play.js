@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('starfield2', './assets/starfield2.png')
         this.load.image('starfield3', './assets/starfield3.png')
         this.load.image('starfield5', './assets/starfield5.png')
+        this.load.image('Menualienship', './assets/Menualienship.png');
         this.load.spritesheet('spaceshipanim', './assets/spaceshipanim.png',{frameWidth: 63, frameHeight: 32, startFrame: 0, endFrame: 1});
         this.load.spritesheet('alienshipanim', './assets/alienshipanim.png',{frameWidth: 31, frameHeight: 15, startFrame: 0, endFrame: 3});
         // load spritesheet
@@ -45,6 +46,7 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*5, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*6 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*6, 'spaceship', 0, 10).setOrigin(0,0);
+        
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
@@ -65,22 +67,22 @@ class Play extends Phaser.Scene {
         this.p1Score = 0;
         // display score
       let scoreConfig = {
-      fontFamily: 'Courier',
+      fontFamily: 'space mission',
       fontSize: '28px',
-      backgroundColor: '#F3B141',
-          color: '#843605',
+      backgroundColor: '#000',
+          color: '#FFFFFF',
           align: 'right',
           padding: {
           top: 5,
           bottom: 5,
       },
-      fixedWidth: 100
+        fixedWidth: 100
       }
       let timeConfig = {
-        fontFamily: 'Courier',
+        fontFamily: 'space mission',
         fontSize: '28px',
-        backgroundColor: '#F3B141',
-            color: '#843605',
+        backgroundColor: '#000',
+            color: '#FFFFFF',
             align: 'right',
             padding: {
             top: 5,
@@ -88,10 +90,23 @@ class Play extends Phaser.Scene {
         },
         fixedWidth: 100
         }
+        let highscoreConfig = {
+          fontFamily: 'space mission',
+          fontSize: '20px',
+          backgroundColor: '#000',
+              color: '#FFFFFF',
+              align: 'center',
+              padding: {
+              top: 5,
+              bottom: 5,
+          },
+          fixedWidth: 300
+          }
         this.seconds = game.settings.gameTimer;
       
       this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
       this.scoreRight = this.add.text(borderUISize + borderPadding*43.5, borderUISize + borderPadding*2, game.settings.gameTimer/1000, timeConfig);
+      this.scoreCenter = this.add.text(game.config.width/3.75, borderUISize + borderPadding*2, "Highest score: " + highest_score, highscoreConfig);
       // GAME OVER flag
       this.gameOver = false;
       // 60-second play clock
@@ -102,6 +117,8 @@ class Play extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
         this.gameOver = true;
+        
+        
       }, null, this);
       this.clock30 = this.time.delayedCall(game.settings.gameTimer/2, () => 
       {
@@ -114,7 +131,13 @@ class Play extends Phaser.Scene {
     update(time, delta) {
           // check key input for restart
         let deltaMultiplier = (delta/16.66667);
+        if (highest_score < this.p1Score) {
+          highest_score = this.p1Score; 
+          console.log("new High score: " + highest_score);
+          this.scoreCenter.text = "Highest score: " + highest_score;
+        }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.music.pause();
             this.scene.restart();
         }
         

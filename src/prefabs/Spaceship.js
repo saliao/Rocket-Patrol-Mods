@@ -38,7 +38,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
             }
             this.anims.setRepeat(-1);
     }
-
+    
     update() {
         this.x -= this.moveSpeed;
 
